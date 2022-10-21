@@ -5,8 +5,9 @@ $ResourceGroupName = 'TestConditionalAccess'
 $PrincipalId = '8ad9676b-6d83-4d50-be85-4fa0617a0b6c'
 $Role = 'Owner'
 
+
 # load helper module
-. .\helper.psm1
+Import-Module -Name .\helper.psm1 -force -Verbose
 
 <#
 Login-AzAccount -SubscriptionId $SubscriptionId
@@ -17,15 +18,17 @@ New-AzResourceGroup -Name $ResourceGroupName -Location centralus -OutVariable Ne
 
 <#
 Get-AzResourceGroup -Name $ResourceGroupName -OutVariable NewResourceGroup
+
 #>
 
-# Assign access via PIM to the Resource Group
+# Assign access via PIM to the Resource Group, you can skip this step
 New-PimRoleAssignment -scope $NewResourceGroup[0].ResourceId -PrincipalId $PrincipalId -Role $Role
 
 # Enable conditional access policy c1 on the role for Owner on the Resource Group Scope
 Update-PimConditionalAccess -scope $NewResourceGroup[0].ResourceId -Role $Role
 
-<# Disable PIM if you want to test without it enabled, then activation will work
+<# 
+# Disable PIM if you want to test without it enabled, then activation will work
 
 Update-PimConditionalAccess -scope $NewResourceGroup[0].ResourceId -Role $Role -DisableConditionalAccess
 #>
@@ -34,10 +37,7 @@ Update-PimConditionalAccess -scope $NewResourceGroup[0].ResourceId -Role $Role -
 New-PimRoleActivation -scope $NewResourceGroup[0].ResourceId -PrincipalId $PrincipalId -Role $Role
 
 <#
-New-AzRoleAssignmentScheduleRequest_CreateExpanded: D:\Repos\scapim-ps\aaworking\repro_pim_conditional_access.ps1:116:9
-Line |
- 116 |          New-AzRoleAssignmentScheduleRequest @ScheduleRequest |
-     |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | &claims=%7B%22access_token%22%3A%7B%22acrs%22%3A%7B%22essential%22%3Atrue%2C%20%22value%22%3A%22c1%22%7D%7D%7D
+FullyQualifiedErrorId : RoleAssignmentRequestAcrsValidationFailed,Microsoft.Azure.PowerShell.Cmdlets.Resources.Authorization.Cmdlets.NewAzRoleAssignmentScheduleRequest_CreateExpanded
+ErrorDetails          : &claims={"access_token":{"acrs":{"essential":true, "value":"c1"}}}
 #>
 
