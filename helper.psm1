@@ -5,7 +5,7 @@ function Update-PimConditionalAccess
     param (
         [string]$scope,
     
-        [validateset('Owner', 'Contributor', 'User Access Administrator')]
+        [validateset('Log Analytics Reader', 'Owner', 'Contributor', 'User Access Administrator')]
         [string]$Role = 'Owner',
 
         [switch]$DisableConditionalAccess
@@ -100,6 +100,10 @@ function New-PimRoleActivation
             {
                 '/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
             }
+            'Log Analytics Reader'
+            {
+                '/providers/Microsoft.Authorization/roleDefinitions/73c42c96-874c-492b-b04d-ab87d138a893'
+            }
         }
         
         $ScheduleRequest = @{
@@ -138,7 +142,7 @@ function New-PimRoleAssignment
         [validateset('PT15M', 'PT30M', 'PT1H', 'PT8H')]
         [string]$duration = 'PT1H',
 
-        [validateset('AdminAssign')]
+        [validateset('AdminAssign', 'AdminRemove')]
         [string]$RequestType = 'AdminAssign'
     )
     process
@@ -148,6 +152,10 @@ function New-PimRoleAssignment
             'Owner'
             {
                 '/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
+            }
+            'Log Analytics Reader'
+            {
+                '/providers/Microsoft.Authorization/roleDefinitions/73c42c96-874c-492b-b04d-ab87d138a893'
             }
         }
         
