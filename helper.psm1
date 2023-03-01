@@ -89,7 +89,7 @@ function New-PimRoleActivation
         [validateset('SelfDeactivate', 'SelfActivate', 'SelfExtend', 'SelfRenew')]
         [string]$RequestType = 'SelfActivate',
 
-        [string]$Justification = 'testing pim'
+        [string]$Justification = 'testing pim az powershell'
     )
 
     process
@@ -139,8 +139,8 @@ function New-PimRoleAssignment
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]$Role,
 
-        [validateset('PT15M', 'PT30M', 'PT1H', 'PT8H')]
-        [string]$duration = 'PT1H',
+        [validateset('PT15M', 'PT30M', 'PT1H', 'PT8H', 'P1M')]
+        [string]$duration = 'P1M',
 
         [validateset('AdminAssign', 'AdminRemove')]
         [string]$RequestType = 'AdminAssign'

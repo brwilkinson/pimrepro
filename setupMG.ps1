@@ -20,7 +20,7 @@ $MG = Get-AzManagementGroup -GroupName  $ManagementGroupName
 # load helper module
 Import-Module -Name .\helper.psm1 -force -Verbose
 
-# Assign access via PIM to the Resource Group, you can skip this step
+# Assign access via PIM to the Resource Group
 New-PimRoleAssignment -scope $MG.Id -PrincipalId $PrincipalId -Role $Role
 
 # Enable conditional access policy c1 on the role for Owner on the Resource Group Scope
